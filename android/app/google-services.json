@@ -1,0 +1,74 @@
+{
+  "project_info": {
+    "project_number": "124374796192",
+    "firebase_url": "https://sehati-1479050936446.firebaseio.com",
+    "project_id": "sehati-1479050936446",
+    "storage_bucket": "sehati-1479050936446.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124374796192:android:6965063c9dfa5aa2",
+        "android_client_info": {
+          "package_name": "com.sehati.kehamilan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124374796192-cn4fcshrfnhmighm4sgauem7rg5794lq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sehati.kehamilan",
+            "certificate_hash": "ea924dd1a30f7ce951ea448ea4a7fbce472b553b"
+          }
+        },
+        {
+          "client_id": "124374796192-pkc9qt2agl8cn36b8geg925c7sbadq99.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "124374796192-vtcreej66q8n4ou1ol4tbdosr12jm6i8.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "124374796192-p7ukdjck1qdpoc7dhen6getsj5qcsone.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sehati.kehamilan",
+            "certificate_hash": "0d648b56b39c1e9224e4bf9183f2bae705c05bca"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV1kHUkENrZhM0mnJ81BK4MU9B68WbHNk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124374796192-pkc9qt2agl8cn36b8geg925c7sbadq99.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "124374796192-egto6r03jkso5ri709os1s96f45jnhkp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sehati.kehamilan"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
