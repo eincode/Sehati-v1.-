@@ -57,6 +57,7 @@ import DaftarJanjiTemu from './screen/main/Etc/DaftarJanjiTemu';
 import TanyaJawabKehamilanDetail from './screen/main/Etc/TanyaJawabKehamilanDetail';
 import MomenKehamilan from './screen/main/Etc/MomenKehamilan';
 import NewMoment from './screen/main/Etc/NewMoment';
+import NewMomentCaption from './screen/main/Etc/NewMomentCaption';
 
 //About screens
 import Kebijakan from './screen/main/About/Kebijakan';
@@ -123,7 +124,8 @@ const Screens = (signedIn = false) => {
   tanyaJawabKehamilanDetail: { screen: TanyaJawabKehamilanDetail },
   momenKehamilan: { screen: MomenKehamilan },
   selectProvince: { screen: SelectProvince },
-  newMoment: { screen: NewMoment }
+  newMoment: { screen: NewMoment },
+  newMomentCaption: { screen: NewMomentCaption }
 }, {
   initialRouteName: signedIn? 'main' : 'loginRegister'
 })};

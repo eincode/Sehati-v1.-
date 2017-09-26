@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TextInput, Image, DeviceEventEmitter } from 'react-native'
+import { View, StyleSheet, TextInput, Image, DeviceEventEmitter, Text, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-crop-picker'
+import Camera from 'react-native-camera'
 
 import CustomButton from '../../../components/CustomButton'
 import metrics from '../../../config/metrics'
@@ -34,71 +35,40 @@ class NewMoment extends Component {
         }
     }
 
-    saveMoment() {
-        let request = {
-            username: this.props.username,
-            minggu: this.props.week,
-            image: this.state.selectedImage,
-            caption: this.state.message
-        }
-        let formBody = []
-        for (let key in request) {
-            let encodedKey = encodeURIComponent(key)
-            let encodedValue = encodeURIComponent(request[key])
-            formBody.push(encodedKey + '=' + encodedValue)
-        }
-        formBody = formBody.join('&')
-
-        fetch(metrics.BASE_URL + '/insert_momen.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: formBody
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson.status == 'success') {
-                    DeviceEventEmitter.emit('shouldRefresh', true)
-                    this.props.navigation.goBack(null)
-                } else {
-                    alert('Gagal')
-                }
-            })
-    }
 
     render() {
         return (
             <View style={styles.container}>
-                {this.renderImage()}
-                <CustomButton
-                    text='Pilih Gambar'
-                    buttonStyle={styles.button}
-                    textStyle={styles.buttonText}
-                    onPress={() => {
-                        ImagePicker.openPicker({
-                            mediaType: 'photo',
-                            includeBase64: true
-                        }).then(image => {
-                            this.setState({ selectedImage: image.data, imageUri: image.path })
-                            console.log(image.data)
-                        });
+                <Camera
+                    ref={(cam) => {
+                    this.camera = cam;
                     }}
-                />
-                <TextInput 
-                    multiline={true}
-                    style={styles.textInput}
-                    onChangeText={(value) => this.setState({ message: value })}
-                    placeholder={'Tulis pesan disini'}
-                    underlineColorAndroid={'transparent'}
-                />
-                <CustomButton
-                    text='Simpan'
-                    buttonStyle={styles.button}
-                    textStyle={styles.buttonText}
-                    onPress={() => {
-                    this.saveMoment()
-                    }}
-                />
+                    style={styles.preview}
+                    aspect={Camera.constants.Aspect.fill}/>
+                <View style={{ backgroundColor: 'white', alignItems: 'center', paddingTop: 20, flex: 1, width: metrics.DEVICE_WIDTH }}>
+                    <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => Alert.alert('Maaf', 'Preview only, mohon untuk menggunakan galeri')}>
+                        <Image source={require('../../../../assets/buttons/capture.png')} style={{ width: 50, height: 50, resizeMode: 'contain' }}/>
+                    </TouchableOpacity>
+                    <View style={{ position: 'absolute', bottom: 1, height: 50, width: metrics.DEVICE_WIDTH, flexDirection: 'row' }}>
+                        <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
+                            ImagePicker.openPicker({
+                                mediaType: 'photo',
+                                includeBase64: true
+                            }).then(image => {
+                                this.setState({ selectedImage: image.data, imageUri: image.path })
+                                this.props.navigation.navigate('newMomentCaption', { image: this.state.imageUri, id: this.props.navigation.state.key, selectedImage: image.data })
+                            });
+                        }}>
+                            <Text>Galeri</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderBottomWidth: 3, borderColor: metrics.SECONDARY_COLOR }}>
+                            <Text style={{ color: metrics.SECONDARY_COLOR }}>Foto</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => Alert.alert('Maaf', 'Video feature coming soon')}>
+                            <Text>Video</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
         )
     }
@@ -111,23 +81,11 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    button: {
-        marginTop: 10,
-        backgroundColor: 'rgb(92, 234, 151)'
-    },
-
-    buttonText: {
-        fontFamily: 'roboto-regular',
-        color: 'white'
-    },
-
-    textInput: {
-        backgroundColor: '#FFFA',
-        width: metrics.DEVICE_WIDTH * 0.95,
-        borderRadius: 5,
-        marginBottom: 10,
-        height: 200,
-        padding: 5
+    preview: {
+        width: metrics.DEVICE_WIDTH,
+        height: metrics.DEVICE_HEIGHT * 0.575,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 

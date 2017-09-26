@@ -7,7 +7,10 @@ import com.reactlibrary.googlesignin.RNGoogleSignInPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.dscj.autoheightwebview.AutoHeightWebViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
+
+import com.cboy.rn.splashscreen.SplashScreenReactPackage;
+
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -19,34 +22,35 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            return Arrays.<ReactPackage>asList(
+                    new MainReactPackage(),
+                    new PickerPackage(),
+                    new RNGoogleSignInPackage(),
+                    new AutoHeightWebViewPackage(),
+                    new VectorIconsPackage(),
+                    new SplashScreenReactPackage(),
+                    new FacebookLoginPackage(),
+                    new RCTCameraPackage()
+            );
+        }
+    };
+
     @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
+    public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
     }
 
     @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new PickerPackage(),
-              new RNGoogleSignInPackage(),
-              new AutoHeightWebViewPackage(),
-            new VectorIconsPackage(),
-            new SplashScreenReactPackage(),
-              new FacebookLoginPackage()
-      );
+    public void onCreate() {
+        super.onCreate();
+        SoLoader.init(this, /* native exopackage */ false);
     }
-  };
-
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
-  }
-
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
-  }
 }

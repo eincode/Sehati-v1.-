@@ -94,6 +94,9 @@ class MomenKehamilan extends Component {
         return (
             <View style={styles.container}>
                 {this.renderData()}
+                <View style={{ justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 1, right: 1, backgroundColor: metrics.SECONDARY_COLOR, width: 55, height: 55, borderRadius: 100, marginRight: 20, marginBottom: 20, elevation: 5, shadowColor: '#000', shadowRadius: 5, shadowOpacity: 1, shadowOffset: { width: 0, height: 3 }}}>
+                    <Text style={{ color: 'white', fontSize: 15 }}>+</Text>
+                </View>
             </View>
         )
     }

@@ -11,6 +11,7 @@
 		"react-native": "0.48.1",
 		"react-native-autoheight-webview": "^0.3.2",
 		"react-native-calendars": "^1.5.8",
+		"react-native-camera": "^0.10.0",
 		"react-native-facebook-login": "^1.5.0",
 		"react-native-google-sign-in": "^0.0.16",
 		"react-native-htmlview": "^0.10.0",

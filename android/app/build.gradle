@@ -147,6 +147,7 @@ dependencies {
         exclude group: "com.google.android.gms"
     }
     compile "com.google.android.gms:play-services-auth:10.0.1"
+    compile project(':react-native-camera')
 }
 
 apply plugin: "com.google.gms.google-services"
