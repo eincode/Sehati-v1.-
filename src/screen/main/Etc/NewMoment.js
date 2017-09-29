@@ -35,6 +35,15 @@ class NewMoment extends Component {
         }
     }
 
+    capturePhoto() {
+        Alert.alert('Maaf', 'Preview only, mohon untuk menggunakan galeri')
+        // this.camera.capture()
+        //     .then((data) => {
+        //         console.log(data)
+        //         this.props.navigation.navigate('newMomentCaption', { selectedImage: data, id: this.props.navigation.state.key })
+        //     })
+    }
+
 
     render() {
         return (
@@ -44,9 +53,10 @@ class NewMoment extends Component {
                     this.camera = cam;
                     }}
                     style={styles.preview}
-                    aspect={Camera.constants.Aspect.fill}/>
+                    aspect={Camera.constants.Aspect.fill}
+                />
                 <View style={{ backgroundColor: 'white', alignItems: 'center', paddingTop: 20, flex: 1, width: metrics.DEVICE_WIDTH }}>
-                    <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => Alert.alert('Maaf', 'Preview only, mohon untuk menggunakan galeri')}>
+                    <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => this.capturePhoto() }>
                         <Image source={require('../../../../assets/buttons/capture.png')} style={{ width: 50, height: 50, resizeMode: 'contain' }}/>
                     </TouchableOpacity>
                     <View style={{ position: 'absolute', bottom: 1, height: 50, width: metrics.DEVICE_WIDTH, flexDirection: 'row' }}>

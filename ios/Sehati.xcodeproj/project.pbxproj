@@ -53,6 +53,10 @@
 		9EABFF6B57574E5E8B88C1B4 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7D0C5795BA2468986308731 /* Lato-Black.ttf */; };
 		A0A67C30395540D4BDE2245A /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5BAE70B04FF641318152DEF0 /* Lato-BlackItalic.ttf */; };
 		A5264C511F5E7A4B00838A1D /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5264C501F5E7A4B00838A1D /* GoogleSignIn.framework */; };
+		A53A01351F7BBE5B00DB6A1F /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53A01341F7BBE5B00DB6A1F /* RSKImageCropper.framework */; };
+		A53A01361F7BBE5B00DB6A1F /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A53A01341F7BBE5B00DB6A1F /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A53A01391F7BBE6900DB6A1F /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53A01381F7BBE6900DB6A1F /* QBImagePicker.framework */; };
+		A53A013A1F7BBE6900DB6A1F /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A53A01381F7BBE6900DB6A1F /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A545C1381F7A2BBB00F52716 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A545C11A1F7A2B9E00F52716 /* libRCTCamera.a */; };
 		A597B89B1F62DDBE00840003 /* RNGoogleSignIn in Resources */ = {isa = PBXBuildFile; fileRef = A597B89A1F62DDBE00840003 /* RNGoogleSignIn */; };
 		A597B8A21F62DF9F00840003 /* RNGoogleSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = A597B89E1F62DF9F00840003 /* RNGoogleSignIn.swift */; };
@@ -348,6 +352,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A53A01371F7BBE5C00DB6A1F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A53A01361F7BBE5B00DB6A1F /* RSKImageCropper.framework in Embed Frameworks */,
+				A53A013A1F7BBE6900DB6A1F /* QBImagePicker.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -401,6 +420,8 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A5264C501F5E7A4B00838A1D /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = Pods/GoogleSignIn/Frameworks/GoogleSignIn.framework; sourceTree = "<group>"; };
 		A5264C871F5EEA6800838A1D /* Sehati-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sehati-Bridging-Header.h"; sourceTree = "<group>"; };
+		A53A01341F7BBE5B00DB6A1F /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A53A01381F7BBE6900DB6A1F /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A545C10F1F7A2B9E00F52716 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		A597B89A1F62DDBE00840003 /* RNGoogleSignIn */ = {isa = PBXFileReference; lastKnownFileType = folder; path = RNGoogleSignIn; sourceTree = "<group>"; };
 		A597B89D1F62DF9F00840003 /* RNGoogleSignIn-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RNGoogleSignIn-Bridging-Header.h"; path = "RNGoogleSignIn/RNGoogleSignIn-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -444,6 +465,7 @@
 				A545C1381F7A2BBB00F52716 /* libRCTCamera.a in Frameworks */,
 				A5CBF2821F5E527D009E2D56 /* libRCTFBLogin.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
+				A53A01351F7BBE5B00DB6A1F /* RSKImageCropper.framework in Frameworks */,
 				A5CBF2881F5E533D009E2D56 /* FBSDKLoginKit.framework in Frameworks */,
 				A5CBF2871F5E533D009E2D56 /* FBSDKCoreKit.framework in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -459,6 +481,7 @@
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
+				A53A01391F7BBE6900DB6A1F /* QBImagePicker.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				7A70BCFC7A1A4C8FBB81C90C /* libSplashScreen.a in Frameworks */,
 				626150D9155D4A9E9EC21788 /* libRNVectorIcons.a in Frameworks */,
@@ -705,6 +728,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A53A01381F7BBE6900DB6A1F /* QBImagePicker.framework */,
+				A53A01341F7BBE5B00DB6A1F /* RSKImageCropper.framework */,
 				A5CBF2831F5E531F009E2D56 /* Frameworks */,
 				13B07FAE1A68108700A75B9A /* Sehati */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -843,6 +868,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				E986B69B3DD8655899C2546B /* [CP] Embed Pods Frameworks */,
 				D31F1B8BA16D3A41CA1BE29A /* [CP] Copy Pods Resources */,
+				A53A01371F7BBE5C00DB6A1F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

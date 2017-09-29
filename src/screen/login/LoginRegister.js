@@ -3,12 +3,22 @@ import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 import GoogleSignIn from 'react-native-google-sign-in';
+import { NavigationActions } from 'react-navigation';
 
+import metrics from '../../config/metrics'
 import store from '../../service/store'
-import { setUserRegisterInfo, setUserType, storeNavigator } from '../../service/action'
+import { setUserRegisterInfo, setUserType, storeNavigator, setWeek, setUsername } from '../../service/action'
 import CustomButton from '../../components/CustomButton';
 
 const IOS_CLIENT_ID = '124374796192-egto6r03jkso5ri709os1s96f45jnhkp.apps.googleusercontent.com'
+const resetAction = (route) => {
+    return NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({ routeName: route, params: { week: 1 } })
+        ]
+    })
+}
 
 class LoginRegister extends Component {
 
@@ -76,6 +86,59 @@ class LoginRegister extends Component {
     //     }
     // }
 
+    socialMediaLogin(username) {
+        let request = {
+            username: username,
+            password: 'nopassword'
+        }
+        let formBody = [];
+        for (let key in request) {
+            let encodedKey = encodeURIComponent(key);
+            let encodedValue = encodeURIComponent(request[key]);
+            formBody.push(encodedKey + '=' + encodedValue);
+        }
+        formBody = formBody.join('&');
+        fetch(metrics.BASE_URL + '/login.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.status == 'success') {
+                    this.setState({ isLoggingIn: false });
+                    store.dispatch(setWeek(responseJson.minggu));
+                    store.dispatch(setUsername(username));
+                    this.props.navigation.dispatch(resetAction(this.props.userType));
+                }
+            })
+    }
+
+    checkUsername(username) {
+        let formData = new FormData();
+        let request = {
+            username: username
+        }
+        for (let key in request) {
+            formData.append(key, request[key]);
+        }
+        fetch(metrics.BASE_URL+'/cek_username.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            if (responseJson.status == 'success') {
+                this.props.navigation.navigate('additional')
+            } else {
+                this.socialMediaLogin(username)
+            }
+        })
+    }
+
     async loginWithFacebook() {
         const self = this
         FBLoginManager.loginWithPermissions(['public_profile'], function(err, data) {
@@ -90,7 +153,7 @@ class LoginRegister extends Component {
                             login_type: 'facebook'
                         }
                         store.dispatch(setUserRegisterInfo(userData))
-                        self.props.navigation.navigate('additional')
+                        self.checkUsername(responseJson.id)
                     })
         })
     }
@@ -113,7 +176,7 @@ class LoginRegister extends Component {
             login_type: 'google'
         }
         store.dispatch(setUserRegisterInfo(userData))
-        this.props.navigation.navigate('additional')
+        this.checkUsername(user.userID)
     }
 
     render() {

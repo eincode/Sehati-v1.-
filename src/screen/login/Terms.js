@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import { WebView, StyleSheet, Button, Text } from 'react-native';
+import { WebView, StyleSheet, Button, Text, ScrollView } from 'react-native';
 
 import HeaderRight from '../../components/HeaderRight';
 

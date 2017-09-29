@@ -73,6 +73,7 @@ class HitungKontraksi extends Component {
       case 'switchOff': {
         this.setState({ buttonState: 'switchOn', stopwatchStart: false, endTime: `${new Date().getHours()}:${new Date().getMinutes()}` });
         setTimeout(() => {
+          console.log()
           let request = {
             username: this.props.username,
             time_apart: (this.state.lastContractionTime == null ? 0 : (Date.now() / 1000 - this.state.lastContractionTime)),

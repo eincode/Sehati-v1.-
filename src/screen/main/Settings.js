@@ -155,7 +155,8 @@ class Settings extends Component {
             propinsi: this.state.province,
             kabupaten: this.state.state,
             kode_pos: this.state.postal,
-            email: this.state.email
+            email: this.state.email,
+            haid_terakhir: this.state.lastHaid
         }
         let formBody = []
         for (let key in request) {

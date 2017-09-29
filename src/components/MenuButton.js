@@ -30,7 +30,7 @@ class MenuButton extends Component {
         this.handleModal();
         if (screen == 'logout') {
             AsyncStorage.setItem('login', 'false')
-            this.props.rootNav.dispatch(resetAction('loginSelection'))
+            this.props.rootNav.dispatch(resetAction('loginRegister'))
         } else {
             this.props.rootNav.navigate(screen);
         }

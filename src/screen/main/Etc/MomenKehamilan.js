@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Text, FlatList, ActivityIndicator, Image, DeviceEventEmitter } from 'react-native'
+import { View, StyleSheet, Text, FlatList, ActivityIndicator, Image, DeviceEventEmitter, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import metrics from '../../../config/metrics'
 
@@ -9,17 +10,15 @@ class MomenKehamilan extends Component {
     static navigationOptions = ({ navigation }) => {
         const { navigate, state } = navigation;
         return {
-            title: 'Momen Kehamilan',
-            headerRight: (
-                <Text style={{ marginRight: 20, color: 'grey' }} onPress={() => navigate('newMoment')}>Tambah</Text>
-            )
+            title: 'Momen Kehamilan'
         }
     }
 
     constructor(props) {
         super(props)
         this.state = {
-            data: null
+            data: null,
+            isFabButtonsVisible: false
         }
     }
 
@@ -90,13 +89,32 @@ class MomenKehamilan extends Component {
         }
     }
 
+    renderButtons() {
+        if (this.state.isFabButtonsVisible) {
+            return (
+                <View style={{ alignItems: 'center' }}>
+                    <TouchableOpacity style={{ marginBottom: 10, marginTop: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: metrics.SECONDARY_COLOR, width: 35, height: 35, borderRadius: 100, elevation: 5, shadowColor: '#000', shadowRadius: 5, shadowOpacity: 1, shadowOffset: { width: 0, height: 3 }}} onPress={() => this.props.navigation.navigate('newMoment')} >
+                        <Icon name={'photo-camera'} style={{ color: 'white', fontSize: 20 }}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ marginBottom: 15, marginTop: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: metrics.SECONDARY_COLOR, width: 35, height: 35, borderRadius: 100, elevation: 5, shadowColor: '#000', shadowRadius: 5, shadowOpacity: 1, shadowOffset: { width: 0, height: 3 }}} onPress={() => this.props.navigation.navigate('newMomentCaption', { selectedImage: null })}>
+                        <Icon name={'edit'} style={{ color: 'white', fontSize: 20 }}/>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 {this.renderData()}
-                <View style={{ justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 1, right: 1, backgroundColor: metrics.SECONDARY_COLOR, width: 55, height: 55, borderRadius: 100, marginRight: 20, marginBottom: 20, elevation: 5, shadowColor: '#000', shadowRadius: 5, shadowOpacity: 1, shadowOffset: { width: 0, height: 3 }}}>
-                    <Text style={{ color: 'white', fontSize: 15 }}>+</Text>
+                <View style={{ position: 'absolute', bottom: 1, right: 1, marginRight: 20, marginBottom: 20, }}>
+                    {this.renderButtons()}
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: metrics.SECONDARY_COLOR, width: 55, height: 55, borderRadius: 100, elevation: 5, shadowColor: '#000', shadowRadius: 5, shadowOpacity: 1, shadowOffset: { width: 0, height: 3 }}} onPress={() => this.setState({ isFabButtonsVisible: !this.state.isFabButtonsVisible })}>
+                        <Text style={{ color: 'white', fontSize: 25 }}>+</Text>
+                    </TouchableOpacity>
                 </View>
+                
             </View>
         )
     }

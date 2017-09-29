@@ -13,7 +13,7 @@ export default class TipsKehamilanDetail extends Component {
         return (
             <ScrollView contentContainerStyle={styles.container}>
                 <WebView
-                    source={{ html: params.content+'<style>p, li{font-family: roboto; font-size: 90%}</style>' }}
+                    source={{ html: params.content+'<style>p, li{font-family: roboto; font-size: 200%}</style>' }}
                     style={styles.webView}
                 />
             </ScrollView>

@@ -26,7 +26,8 @@ class Schedule extends Component {
     state = {
         isChecked: false,
         scheduleList: null,
-        isLoadingData: true
+        isLoadingData: true,
+        scheduleList: []
     }
 
     componentWillMount() {
@@ -64,6 +65,33 @@ class Schedule extends Component {
         this.props.rootNav.navigate('newSchedule');
     }
 
+    updateScheduleStatus(id) {
+        let request = {
+            username: this.props.username,
+            id_jadwal: id
+        }
+        let formBody = []
+        for (let key in request) {
+            let encodedKey = encodeURIComponent(key)
+            let encodedValue = encodeURIComponent(request[key])
+            formBody.push(encodedKey + '=' + encodedValue)
+        }
+        formBody = formBody.join('&')
+
+        fetch(metrics.BASE_URL + '/edit_check_jadwal.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            if (responseJson.status != 'success') {
+                alert('Ada yang salah')
+            }
+        })
+    }
+
     renderScheduleList() {
         if (this.state.isLoadingData) {
             return (
@@ -84,8 +112,9 @@ class Schedule extends Component {
                                 style={styles.checkboxItem}
                                 onPress={(checked) => {
                                     let scheduleList = this.state.scheduleList
-                                    scheduleList[index].status_jadwal = 'sudah'
+                                    scheduleList[index].status_jadwal == 'sudah' ? scheduleList[index].status_jadwal = 'belum' : scheduleList[index].status_jadwal = 'sudah'
                                     this.setState({ scheduleList: scheduleList })
+                                    this.updateScheduleStatus(scheduleList[index].id_jadwal_user)
                                 }}
                             />
                         }
@@ -97,11 +126,21 @@ class Schedule extends Component {
         }
     }
 
+    getCompletedSchedule() {
+        let count = 0
+        for (let index in this.state.scheduleList) {
+            if (this.state.scheduleList[index].status_jadwal == 'sudah') {
+                count++
+            }
+        }
+        return count
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.summaryContainer}>
-                    <Text> 0/3 telah diselesaikan </Text>
+                    <Text> {this.getCompletedSchedule()}/{this.state.scheduleList.length || 0} telah diselesaikan </Text>
                 </View>
                 {this.renderScheduleList()}
                 <View style={styles.buttonsContainer}>
