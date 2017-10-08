@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Alert } from 'react-native';
 import { connect } from 'react-redux';
 
 import Tabs from '../../components/Tabs';
@@ -46,7 +46,6 @@ class Today extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('disini')
         let request = {
             minggu: nextProps.week
         }
@@ -66,6 +65,7 @@ class Today extends Component {
             body: formBody
         }).then((response) => response.json())
         .then((responseJson) => this.setState({ data: responseJson }))
+        
     }
 
     render() {
@@ -88,7 +88,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        week: state.setWeek.week
+        username: state.setUsername.username,
+        week: state.setWeek.week,
+        rootNav: state.storeNavigator.navigator        
     }
 }
 

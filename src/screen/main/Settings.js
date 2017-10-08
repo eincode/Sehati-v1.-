@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TextInput, Button, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TextInput, Button, ActivityIndicator, Alert } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal from 'react-native-modal';
@@ -10,6 +10,8 @@ import HeaderButton from '../../components/HeaderButton';
 import ListButton from '../../components/ListButton';
 import CustomButton from '../../components/CustomButton';
 import metrics from '../../config/metrics';
+import store from '../../service/store'
+import { setWeek } from '../../service/action'
 
 const backAction = NavigationActions.back();
 
@@ -73,6 +75,34 @@ class Settings extends Component {
             })
     }
 
+    resetData() {
+        const self = this
+        let request = {
+            username: this.props.username
+        }
+        let formBody = []
+        for (let key in request) {
+            let encodedKey = encodeURIComponent(key)
+            let encodedValue = encodeURIComponent(request[key])
+            formBody.push(encodedKey + '=' + encodedValue)
+        }
+        formBody = formBody.join('&')
+        fetch(metrics.BASE_URL + '/reset.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.status == 'success') {
+                    self.props.navigation.goBack(null)
+                } else {
+                    Alert.alert('Error', 'Ada yang salah')
+                }
+            })
+    }
+
     renderContent() {
         if (this.state.isLoading) {
             return (
@@ -85,6 +115,15 @@ class Settings extends Component {
                         text='Si kecil telah lahir'
                         buttonStyle={styles.button}
                         textStyle={styles.buttonText}
+                        onPress={() => {
+                            Alert.alert('Perhatian', 'Apakah anda yakin?', [{
+                                text: 'Iya', onPress: () => this.resetData()
+                            }, {
+                                text: 'Tidak'
+                            }], {
+                                cancelable: false
+                            })
+                        }}
                     />
                     <HeaderButton
                         header='Nama Lengkap'
@@ -146,7 +185,7 @@ class Settings extends Component {
     }
 
     saveData() {
-        console.log(this.state)
+        const self = this
         let request = {
             username: this.props.username,
             nama: this.state.fullname,
@@ -175,7 +214,28 @@ class Settings extends Component {
         }).then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status == 'success'){
-                    this.props.navigation.goBack(null)
+                    let request = {
+                        username: self.props.username
+                    }
+                    let formBody = []
+                    for (let key in request) {
+                        let encodedKey = encodeURIComponent(key)
+                        let encodedValue = encodeURIComponent(request[key])
+                        formBody.push(encodedKey + '=' + encodedValue)
+                    }
+                    formBody = formBody.join('&')
+
+                    fetch(metrics.BASE_URL + '/get_minggu.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-forl-urlencoded'
+                        },
+                        body: formBody
+                    }).then((response) => response.json())
+                        .then((responseJson) => {
+                            store.dispatch(setWeek(responseJson.minggu))
+                            this.props.navigation.goBack(null)
+                        })
                 } else {
                     alert('Gagal')
                 }

@@ -8,6 +8,7 @@ import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.dscj.autoheightwebview.AutoHeightWebViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
+import com.rnfs.RNFSPackage;
 
 import com.cboy.rn.splashscreen.SplashScreenReactPackage;
 
@@ -38,7 +39,8 @@ public class MainApplication extends Application implements ReactApplication {
                     new VectorIconsPackage(),
                     new SplashScreenReactPackage(),
                     new FacebookLoginPackage(),
-                    new RCTCameraPackage()
+                    new RCTCameraPackage(),
+                    new RNFSPackage()
             );
         }
     };

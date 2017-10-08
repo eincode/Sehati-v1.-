@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import ListButton from '../../../components/ListButton';
@@ -12,38 +12,40 @@ class Kehamilanku extends Component{
         const { rootNav } = this.props;
         return(
             <View style = {styles.container}>
-                <ListButton
-                    text = {'Berat badan'}
-                    arrow = {true}
-                    onPress = {() => rootNav.navigate('detailJournal', { title: 'Berat Badan', field: 'berat_tubuh_kehamilan', column: ['Berat', 'Bertambah'], type: 'kehamilan' })}
-                />
-                <View style = {styles.divider}/>
-                <ListButton
-                    text = {'Denyut nadi'}
-                    arrow = {true}
-                    onPress = {() => rootNav.navigate('detailJournal', { title: 'Denyut Nadi', field: 'denyut_jantung_kehamilan', column: ['Denyut', 'Bertambah'], type: 'kehamilan' })}
-                />
-                <ListButton
-                    text = {'Tekanan darah'}
-                    arrow = {true}
-                    onPress = {() => rootNav.navigate('detailJournal', { title: 'Tekanan Darah', field: 'tekanan_darah_kehamilan', column: ['Tekanan', 'Bertambah'], type: 'kehamilan' })}
-                />
-                <ListButton
-                    text = {'Suhu tubuh'}
-                    arrow = {true}
-                    onPress = {() => rootNav.navigate('detailJournal', { title: 'Suhu Tubuh', field: 'suhu_tubuh_kehamilan', column: ['Suhu', 'Bertambah'], type: 'kehamilan' })}
-                />
-                <ListButton
-                    text = {'Pernapasan'}
-                    arrow = {true}
-                    onPress = {() => rootNav.navigate('detailJournal', { title: 'Pernapasan', field: 'pernapasan_kehamilan', column: ['Pernapasan', 'Bertambah'], type: 'kehamilan' })}
-                />
-                <View style = {styles.divider}/>
-                <ListButton
-                    text = {'Lingkar lengan atas'}
-                    arrow = {true}
-                    onPress = {() => rootNav.navigate('detailJournal', { title: 'Lingkar Lengan', field: 'lingkar_lengan_kehamilan', column: ['Tinggi', 'Bertambah'], type: 'kehamilan' })}
-                />
+                <ScrollView contentContainerStyle = {styles.container}>
+                    <ListButton
+                        text = {'Berat badan'}
+                        arrow = {true}
+                        onPress = {() => rootNav.navigate('detailJournal', { title: 'Berat Badan', field: 'berat_tubuh_kehamilan', column: ['Berat', 'Bertambah'], type: 'kehamilan' })}
+                    />
+                    <View style = {styles.divider}/>
+                    <ListButton
+                        text = {'Denyut nadi'}
+                        arrow = {true}
+                        onPress = {() => rootNav.navigate('detailJournal', { title: 'Denyut Nadi', field: 'denyut_jantung_kehamilan', column: ['Denyut', 'Bertambah'], type: 'kehamilan' })}
+                    />
+                    <ListButton
+                        text = {'Tekanan darah'}
+                        arrow = {true}
+                        onPress = {() => rootNav.navigate('detailJournal', { title: 'Tekanan Darah', field: 'tekanan_darah_kehamilan', column: ['Tekanan', 'Bertambah'], type: 'kehamilan' })}
+                    />
+                    <ListButton
+                        text = {'Suhu tubuh'}
+                        arrow = {true}
+                        onPress = {() => rootNav.navigate('detailJournal', { title: 'Suhu Tubuh', field: 'suhu_tubuh_kehamilan', column: ['Suhu', 'Bertambah'], type: 'kehamilan' })}
+                    />
+                    <ListButton
+                        text = {'Pernapasan'}
+                        arrow = {true}
+                        onPress = {() => rootNav.navigate('detailJournal', { title: 'Pernapasan', field: 'pernapasan_kehamilan', column: ['Pernapasan', 'Bertambah'], type: 'kehamilan' })}
+                    />
+                    <View style = {styles.divider}/>
+                    <ListButton
+                        text = {'Lingkar lengan atas'}
+                        arrow = {true}
+                        onPress = {() => rootNav.navigate('detailJournal', { title: 'Lingkar Lengan', field: 'lingkar_lengan_kehamilan', column: ['Tinggi', 'Bertambah'], type: 'kehamilan' })}
+                    />
+                </ScrollView>
             </View>
         )
     }

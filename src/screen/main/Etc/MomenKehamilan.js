@@ -63,10 +63,13 @@ class MomenKehamilan extends Component {
                 }).reverse() })
                 console.log(this.state.data)
             })
+            .catch(() => {
+                this.setState({ data: 'none' })
+            })
     }
 
     renderData() {
-        if (this.state.data) {
+        if (this.state.data != 'none') {
             return (
                 <FlatList
                     data={ this.state.data }
@@ -81,6 +84,14 @@ class MomenKehamilan extends Component {
                     }}
                     keyExtractor={(item, index) => index}
                 />
+            )
+        } else if (this.state.data == 'none') {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ color: 'grey' }}>
+                        Anda belum memiliki momen apapun
+                    </Text>
+                </View>
             )
         } else {
             return (

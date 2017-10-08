@@ -52,15 +52,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "124374796192-pkc9qt2agl8cn36b8geg925c7sbadq99.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "124374796192-egto6r03jkso5ri709os1s96f45jnhkp.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.sehati.kehamilan"
               }
+            },
+            {
+              "client_id": "124374796192-pkc9qt2agl8cn36b8geg925c7sbadq99.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         },

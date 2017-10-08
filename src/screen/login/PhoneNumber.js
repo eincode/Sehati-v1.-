@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import store from '../../service/store';
 import { setUserRegisterInfo } from '../../service/action';
 import CustomTextInput from '../../components/CustomTextInput';
+import HeaderRight from '../../components/HeaderRight'
 
 class PhoneNumber extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -12,7 +13,9 @@ class PhoneNumber extends Component {
         return {
             title: 'Nomor ponsel',
             headerRight: (
-                <Text style={{ marginRight: 20, color: 'grey' }} onPress={() => navigate('verification')}>Lanjut</Text>
+                <HeaderRight 
+                    navigation = {navigation}
+                />
             )
         }
     }

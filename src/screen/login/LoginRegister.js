@@ -86,7 +86,7 @@ class LoginRegister extends Component {
     //     }
     // }
 
-    socialMediaLogin(username) {
+    socialMediaLogin(username) {        
         let request = {
             username: username,
             password: 'nopassword'
@@ -116,19 +116,22 @@ class LoginRegister extends Component {
     }
 
     checkUsername(username) {
-        let formData = new FormData();
+        let formBody = []
         let request = {
             username: username
         }
         for (let key in request) {
-            formData.append(key, request[key]);
+            let encodedKey = encodeURIComponent(key)
+            let encodedValue = encodeURIComponent(request[key])
+            formBody.push(encodedKey + '=' + encodedValue)
         }
+        formBody = formBody.join('&')
         fetch(metrics.BASE_URL+'/cek_username.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: formData
+            body: formBody
         }).then((response) => response.json())
         .then((responseJson) => {
             if (responseJson.status == 'success') {

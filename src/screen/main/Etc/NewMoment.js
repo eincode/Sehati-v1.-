@@ -3,6 +3,7 @@ import { View, StyleSheet, TextInput, Image, DeviceEventEmitter, Text, Touchable
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-crop-picker'
 import Camera from 'react-native-camera'
+import RNFS from 'react-native-fs'
 
 import CustomButton from '../../../components/CustomButton'
 import metrics from '../../../config/metrics'
@@ -36,12 +37,14 @@ class NewMoment extends Component {
     }
 
     capturePhoto() {
-        Alert.alert('Maaf', 'Preview only, mohon untuk menggunakan galeri')
-        // this.camera.capture()
-        //     .then((data) => {
-        //         console.log(data)
-        //         this.props.navigation.navigate('newMomentCaption', { selectedImage: data, id: this.props.navigation.state.key })
-        //     })
+        // Alert.alert('Maaf', 'Preview only, mohon untuk menggunakan galeri')
+        this.camera.capture()
+            .then((data) => {
+                console.log(data)
+                RNFS.readFile(data.path, 'base64')
+                    .then(res => this.props.navigation.navigate('newMomentCaption', { selectedImage: res, id: this.props.navigation.state.key }))
+                
+            })
     }
 
 
@@ -54,6 +57,7 @@ class NewMoment extends Component {
                     }}
                     style={styles.preview}
                     aspect={Camera.constants.Aspect.fill}
+                    captureTarget={Camera.constants.CaptureTarget.disk}
                 />
                 <View style={{ backgroundColor: 'white', alignItems: 'center', paddingTop: 20, flex: 1, width: metrics.DEVICE_WIDTH }}>
                     <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => this.capturePhoto() }>
