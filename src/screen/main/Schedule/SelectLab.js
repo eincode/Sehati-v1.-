@@ -10,7 +10,7 @@ const backAction = NavigationActions.back()
 export default class SelectLab extends Component{
 
     static navigationOptions = {
-        title: 'Pilih klinik'
+        title: 'Pilih klinik '
     }
 
     render(){

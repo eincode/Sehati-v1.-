@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, TextInput, Image, DeviceEventEmitter, Text, TouchableOpacity, Alert } from 'react-native'
+import { View, StyleSheet, TextInput, Image, DeviceEventEmitter, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-crop-picker'
 import Camera from 'react-native-camera'
@@ -11,7 +11,7 @@ import metrics from '../../../config/metrics'
 class NewMoment extends Component {
 
     static navigationOptions = {
-        title: 'Momen Baru'
+        title: 'Momen Baru '
     }
 
     constructor(props) {
@@ -19,7 +19,8 @@ class NewMoment extends Component {
         this.state = {
             selectedImage: null,
             message: '',
-            imageUri: null
+            imageUri: null,
+            isTakingPicture: false
         }
     }
 
@@ -37,7 +38,7 @@ class NewMoment extends Component {
     }
 
     capturePhoto() {
-        // Alert.alert('Maaf', 'Preview only, mohon untuk menggunakan galeri')
+        this.setState({ isTakingPicture: true })
         this.camera.capture()
             .then((data) => {
                 console.log(data)
@@ -45,6 +46,20 @@ class NewMoment extends Component {
                     .then(res => this.props.navigation.navigate('newMomentCaption', { selectedImage: res, id: this.props.navigation.state.key }))
                 
             })
+    }
+
+    renderCapture() {
+        if (this.state.isTakingPicture) {
+            return (
+                <ActivityIndicator />
+            )
+        } else {
+            return (
+                <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => this.capturePhoto() }>
+                    <Image source={require('../../../../assets/buttons/capture.png')} style={{ width: 50, height: 50, resizeMode: 'contain' }}/>
+                </TouchableOpacity>
+            )
+        }
     }
 
 
@@ -60,9 +75,7 @@ class NewMoment extends Component {
                     captureTarget={Camera.constants.CaptureTarget.disk}
                 />
                 <View style={{ backgroundColor: 'white', alignItems: 'center', paddingTop: 20, flex: 1, width: metrics.DEVICE_WIDTH }}>
-                    <TouchableOpacity style={{ marginBottom: 10 }} onPress={() => this.capturePhoto() }>
-                        <Image source={require('../../../../assets/buttons/capture.png')} style={{ width: 50, height: 50, resizeMode: 'contain' }}/>
-                    </TouchableOpacity>
+                    {this.renderCapture()}
                     <View style={{ position: 'absolute', bottom: 1, height: 50, width: metrics.DEVICE_WIDTH, flexDirection: 'row' }}>
                         <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
                             ImagePicker.openPicker({

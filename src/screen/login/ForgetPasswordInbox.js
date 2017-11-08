@@ -8,7 +8,7 @@ export default class ForgetPasswordInbox extends Component{
     static navigationOptions = ({navigation}) => {
         const { navigate } = navigation;
         return{
-            title: 'Lupa kata sandi',
+            title: 'Lupa kata sandi ',
             headerRight: (
                 <Text style = {{marginRight: 20, color: 'grey'}} onPress={() => navigate('newPasswordInput')}>Lanjut</Text>
             )

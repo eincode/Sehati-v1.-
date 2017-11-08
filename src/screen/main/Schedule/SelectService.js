@@ -10,7 +10,7 @@ const backAction = NavigationActions.back()
 export default class SelectService extends Component{
 
     static navigationOptions = {
-        title: 'Pilih layanan'
+        title: 'Pilih layanan '
     }
 
    render(){

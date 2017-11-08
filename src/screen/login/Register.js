@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, Button, Text, ActivityIndicator, TextInput } from 'react-native';
+import { ScrollView, View, StyleSheet, Button, Text, ActivityIndicator, TextInput, Platform, DatePickerAndroid, Alert } from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
@@ -15,7 +15,7 @@ class Register extends Component {
     static navigationOptions = ({ navigation }) => {
         const { navigate, state } = navigation;
         return {
-            title: 'Daftar',
+            title: 'Daftar ',
             headerRight: (
                 <Text style={{ marginRight: 20, color: 'grey' }} onPress={() => navigate('phoneNumber')}>Lanjut</Text>
             )
@@ -123,30 +123,34 @@ class Register extends Component {
         }
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <ScrollView>
-                    <CustomTextInput
-                        placeholder='Username'
-                        autoCapitalize='none'
-                        autoCorrect={false}
-                        underlineColorAndroid='grey'
-                        style={styles.textInput}
-                        onChangeText={(value) => this.setState({ username: value })}
-                        onBlur={() => this.checkUsername()}
-                    />
-                    <View style={styles.divider}>
-                        {this.getUsernameStatus()}
-                    </View>
-                    <CustomTextInput
-                        placeholder='Nama lengkap'
-                        autoCapitalize='words'
-                        autoCorrect={false}
-                        underlineColorAndroid='grey'
-                        style={styles.textInput}
-                        onChangeText={(value) => this.setState({ fullName: value })}
-                    />
+    async showCalendar() {
+        if (Platform.OS == 'ios') {
+            this.setState({ isCalendarOpened: true })
+        } else {
+            try {
+                const { action, year, month, day } = await DatePickerAndroid.open({
+                    date: new Date()
+                })
+                if (action !== DatePickerAndroid.dismissedAction) {
+                    month++
+                    if (month < 10) {
+                        month = '0'+month
+                    }
+                    if (day < 10) {
+                        day = '0'+day
+                    }
+                    this.setState({ selectedDate: `${year}-${month}-${day}` })
+                }
+            } catch({ code, message }) {
+                Alert.alert('Tidak bisa membuka calendar', message)
+            }
+        }
+    }
+
+    renderForm() {
+        if (Platform.OS != 'ios') {
+            return (
+                <View>
                     <CustomTextInput
                         placeholder='Tanggal lahir'
                         autoCapitalize='words'
@@ -154,7 +158,9 @@ class Register extends Component {
                         underlineColorAndroid='grey'
                         style={styles.textInput}
                         value={this.state.selectedDate}
-                        onFocus={() => this.setState({ isCalendarOpened: true })}
+                        onFocus={() => {
+                            this.showCalendar()
+                        }}
                     />
                     <View style={styles.divider} />
                     <CustomTextInput
@@ -190,6 +196,36 @@ class Register extends Component {
                         style={styles.textInput}
                         onChangeText={(value) => this.setState({ postal: value })}
                     />
+                </View>
+            )
+        }
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <ScrollView>
+                    <CustomTextInput
+                        placeholder='Username'
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        underlineColorAndroid='grey'
+                        style={styles.textInput}
+                        onChangeText={(value) => this.setState({ username: value })}
+                        onBlur={() => this.checkUsername()}
+                    />
+                    <View style={styles.divider}>
+                        {this.getUsernameStatus()}
+                    </View>
+                    <CustomTextInput
+                        placeholder='Nama lengkap'
+                        autoCapitalize='words'
+                        autoCorrect={false}
+                        underlineColorAndroid='grey'
+                        style={styles.textInput}
+                        onChangeText={(value) => this.setState({ fullName: value })}
+                    />
+                    {this.renderForm()}
                     <View style={styles.divider} />
                     <CustomTextInput
                         placeholder='Email'

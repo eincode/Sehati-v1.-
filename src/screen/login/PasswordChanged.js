@@ -14,7 +14,7 @@ const resetAction = NavigationActions.reset({
 export default class PasswordChanged extends Component{
 
     static navigationOptions = {
-        title: 'Perbarui kata sandi'
+        title: 'Perbarui kata sandi '
     }
 
     

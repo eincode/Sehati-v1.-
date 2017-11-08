@@ -8,7 +8,7 @@ import metrics from '../../../config/metrics'
 export default class TipsKehamilanKategori extends Component {
 
     static navigationOptions = ({ navigation }) => ({
-        title: `${navigation.state.params.kategori}`
+        title: `${navigation.state.params.kategori} `
     })
 
     constructor(props) {

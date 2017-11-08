@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Keyboard } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -34,7 +34,7 @@ class Login extends Component {
             borderBottomWidth: 0,
             elevation: 0
         },
-        title: 'Masuk'
+        title: 'Masuk '
     }
 
     state = {
@@ -64,11 +64,16 @@ class Login extends Component {
             body: formBody
         }).then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
                 if (responseJson.status == 'success') {
                     this.setState({ isLoggingIn: false });
                     store.dispatch(setWeek(responseJson.minggu));
                     store.dispatch(setUsername(this.state.username));
-                    this.props.navigation.dispatch(resetAction(this.props.userType));
+                    if (responseJson.status_reset) {
+                        this.props.navigation.navigate('additional', { type: 'reset', username: this.state.username })
+                    } else {
+                        this.props.navigation.dispatch(resetAction(this.props.userType));
+                    }
                 }
             })
     }
@@ -80,7 +85,7 @@ class Login extends Component {
             )
         }
     }
-
+    
     render() {
         const { navigate, dispatch, state } = this.props.navigation;
         return (
@@ -99,6 +104,7 @@ class Login extends Component {
                         secureTextEntry={true}
                         style={styles.textInput}
                         onChangeText={(value) => this.setState({ password: value })}
+                        onSubmitEditing={() => Keyboard.dismiss()}
                     />
                     <CustomButton
                         text='Masuk'

@@ -8,7 +8,7 @@ import metrics from '../../../config/metrics';
 class DaftarJanjiTemu extends Component {
 
     static navigationOptions = {
-        title: 'Daftar Janji Temu'
+        title: 'Daftar Janji Temu '
     }
 
     constructor(props) {

@@ -8,14 +8,14 @@ import CustomButton from '../../../components/CustomButton';
 class Bayiku extends Component{
 
     static navigationOptions = {
-        title: 'Jurnal baru'
+        title: 'Jurnal baru '
     }
 
     render(){
         const { rootNav } = this.props;
         return(
-            <View style = {styles.container}>
-                <ScrollView contentContainerStyle = {styles.container}>
+            <ScrollView contentContainerStyle = {styles.container} style={{ flex: 1 }}>
+
                     <ListButton 
                         text = {'Panjang badan'}
                         arrow = {true}
@@ -35,7 +35,7 @@ class Bayiku extends Component{
                     <ListButton 
                         text = {'Plasenta'}
                         arrow = {true}
-                        onPress = {() => rootNav.navigate('detailJournal', { title: 'Plasenta' })}                    
+                        onPress = {() => rootNav.navigate('detailJournal', { title: 'Plasenta', field: 'plasenta_bentuk_bayi', column: ['Bentuk'], type: 'bayi' })}                    
                     />
                     <ListButton 
                         text = {'Cairan ketuban'}
@@ -54,8 +54,8 @@ class Bayiku extends Component{
                         textStyle = {styles.buttonText}
                         onPress = {() => this.props.rootNav.navigate('newJournal')}
                     />
-                </ScrollView>
-            </View>
+
+            </ScrollView>
         )
     }
 
@@ -63,7 +63,6 @@ class Bayiku extends Component{
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems:'center'
     },
 

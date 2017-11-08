@@ -11,7 +11,7 @@ class PhoneNumber extends Component {
     static navigationOptions = ({ navigation }) => {
         const { navigate, state } = navigation;
         return {
-            title: 'Nomor ponsel',
+            title: 'Nomor ponsel ',
             headerRight: (
                 <HeaderRight 
                     navigation = {navigation}

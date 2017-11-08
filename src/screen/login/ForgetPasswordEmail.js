@@ -10,7 +10,7 @@ export default class ForgetPasswordEmail extends Component{
     static navigationOptions = ({navigation}) => {
         const { navigate } = navigation;
         return{
-            title: 'Lupa kata sandi'
+            title: 'Lupa kata sandi '
         }
     }
 

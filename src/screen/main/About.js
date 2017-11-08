@@ -6,7 +6,7 @@ import ListButton from '../../components/ListButton';
 export default class About extends Component {
 
     static navigationOptions = {
-        title: 'Tentang Sehati'
+        title: 'Tentang Sehati '
     }
 
     render(){

@@ -5,7 +5,7 @@ import CheckBox from 'react-native-icon-checkbox';
 export default class DaftarBelanja extends Component {
 
     static navigationOptions = {
-        title: 'Daftar Belanja'
+        title: 'Daftar Belanja '
     }
 
     state = {

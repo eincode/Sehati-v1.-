@@ -31,7 +31,7 @@ class HeaderRight extends Component{
             return(
                 <Text style = {{marginRight: 20, color: 'grey'}}
                     onPress = {() => {
-                        userType == 'main' ? navigate('additional') :
+                        userType == 'main' ? navigate('additional', { type: 'normal' }) :
                         userType == 'kader' ? dispatch(resetAction('kader')) :
                         dispatch(resetAction('bidan'))}
                     }>

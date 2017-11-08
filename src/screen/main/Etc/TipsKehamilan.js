@@ -19,7 +19,7 @@ export default class TipsKehamilan extends Component {
     }
 
     static navigationOptions = {
-        title: 'Tips Kehamilan'
+        title: 'Tips Kehamilan '
     }
 
     componentDidMount() {

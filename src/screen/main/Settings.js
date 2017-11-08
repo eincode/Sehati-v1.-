@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TextInput, Button, ActivityIndicator, Alert } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TextInput, Button, ActivityIndicator, Alert, DatePickerAndroid, AsyncStorage, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import Modal from 'react-native-modal';
@@ -15,11 +15,20 @@ import { setWeek } from '../../service/action'
 
 const backAction = NavigationActions.back();
 
+const resetAction = (routeName) => {
+    return NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({ routeName: routeName })
+        ]
+    })
+}
+
 class Settings extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'Pengaturan',
+            title: 'Pengaturan ',
         }
     }
 
@@ -96,11 +105,96 @@ class Settings extends Component {
         }).then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status == 'success') {
-                    self.props.navigation.goBack(null)
+                    AsyncStorage.setItem('login', 'false')
+                    self.props.navigation.dispatch(resetAction('loginRegister'))
                 } else {
                     Alert.alert('Error', 'Ada yang salah')
                 }
             })
+    }
+
+    async showBirthdateCalendar() {
+        if (Platform.OS == 'ios') {
+            this.setState({ isBirthdateCalendarOpened: true })
+        } else {
+            try {
+                const { action, year, month, day } = await DatePickerAndroid.open({
+                    date: new Date()
+                })
+                if (action !== DatePickerAndroid.dismissedAction) {
+                    month++
+                    if (month < 10) {
+                        month = '0'+month
+                    }
+                    if (day < 10) {
+                        day = '0'+day
+                    }
+                    this.setState({ birthdate: `${year}-${month}-${day}` })
+                }
+            } catch({ code, message }) {
+                Alert.alert('Tidak bisa membuka calendar', message)
+            }
+        }
+    }
+
+    async showCalendar() {
+        if (Platform.OS == 'ios') {
+            this.setState({ isLastHaidCalendarOpened: true })
+        } else {
+            try {
+                const { action, year, month, day } = await DatePickerAndroid.open({
+                    date: new Date()
+                })
+                if (action !== DatePickerAndroid.dismissedAction) {
+                    month++
+                    if (month < 10) {
+                        month = '0'+month
+                    }
+                    if (day < 10) {
+                        day = '0'+day
+                    }
+                    this.setState({ lastHaid: `${year}-${month}-${day}` })
+                }
+            } catch({ code, message }) {
+                Alert.alert('Tidak bisa membuka calendar', message)
+            }
+        }
+    }
+
+    renderForm() {
+        if (Platform.OS != 'ios') {
+            return(
+                <View>
+                    <HeaderButton
+                        header='Tanggal Lahir'
+                        onFocus={() => this.showBirthdateCalendar()}
+                        initialValue={this.state.birthdate}
+                    />
+                    <View style={styles.divider} />
+                    <HeaderButton
+                        header='Alamat'
+                        initialValue={this.state.profileData.alamat}
+                        onChangeText={(value) => this.setState({ address: value })}                        
+                    />
+                    <HeaderButton
+                        header='Propinsi'
+                        initialValue={this.state.profileData.propinsi}
+                        onChangeText={(value) => this.setState({ province: value })}                        
+                    />
+                    <HeaderButton
+                        header='Kota / Kabupaten'
+                        initialValue={this.state.profileData.kabupaten}
+                        onChangeText={(value) => this.setState({ state: value })}                        
+                    />
+                    <HeaderButton
+                        header='Kode pos'
+                        keyboardType={'numeric'}
+                        initialValue={this.state.profileData.kode_pos}
+                        onChangeText={(value) => this.setState({ postal: value })}                        
+                    />
+                </View>
+            )
+        }
     }
 
     renderContent() {
@@ -130,33 +224,7 @@ class Settings extends Component {
                         initialValue={this.state.profileData.nama}
                         onChangeText={(value) => this.setState({ fullname: value })}
                     />
-                    <HeaderButton
-                        header='Tanggal Lahir'
-                        onFocus={() => this.setState({ isBirthdateCalendarOpened: true })}
-                        initialValue={this.state.birthdate}
-                    />
-                    <View style={styles.divider} />
-                    <HeaderButton
-                        header='Alamat'
-                        initialValue={this.state.profileData.alamat}
-                        onChangeText={(value) => this.setState({ address: value })}                        
-                    />
-                    <HeaderButton
-                        header='Propinsi'
-                        initialValue={this.state.profileData.propinsi}
-                        onChangeText={(value) => this.setState({ province: value })}                        
-                    />
-                    <HeaderButton
-                        header='Kota / Kabupaten'
-                        initialValue={this.state.profileData.kabupaten}
-                        onChangeText={(value) => this.setState({ state: value })}                        
-                    />
-                    <HeaderButton
-                        header='Kode pos'
-                        keyboardType={'numeric'}
-                        initialValue={this.state.profileData.kode_pos}
-                        onChangeText={(value) => this.setState({ postal: value })}                        
-                    />
+                    {this.renderForm()}
                     <View style={styles.divider} />
                     <HeaderButton
                         header='Email'
@@ -167,7 +235,7 @@ class Settings extends Component {
                     <View style={styles.divider} />
                     <HeaderButton
                         header='Hari pertama haid terakhir'
-                        onFocus={() => this.setState({ isLastHaidCalendarOpened: true })}                        
+                        onFocus={() => this.showCalendar()}                        
                         initialValue={this.state.lastHaid}
                     />
                     <View style={styles.divider} />
@@ -228,11 +296,12 @@ class Settings extends Component {
                     fetch(metrics.BASE_URL + '/get_minggu.php', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/x-www-forl-urlencoded'
+                            'Content-Type': 'application/x-www-form-urlencoded'
                         },
                         body: formBody
                     }).then((response) => response.json())
                         .then((responseJson) => {
+                            console.log(responseJson)
                             store.dispatch(setWeek(responseJson.minggu))
                             this.props.navigation.goBack(null)
                         })

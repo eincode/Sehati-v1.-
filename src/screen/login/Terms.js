@@ -10,7 +10,7 @@ export default class Terms extends Component{
     static navigationOptions = ({navigation}) => {
         const { navigate } = navigation;
         return{
-            title: 'Syarat dan Ketentuan',
+            title: 'Syarat dan Ketentuan ',
             headerRight: (
                 <HeaderRight
                     navigation = {navigation}

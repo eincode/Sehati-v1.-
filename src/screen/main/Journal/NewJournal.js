@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator, Alert } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator, Alert, Keyboard } from 'react-native';
 import Modal from 'react-native-modal';
 import CheckBox from 'react-native-icon-checkbox';
 import { connect } from 'react-redux'
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import CustomTextInput from '../../../components/CustomTextInput';
 import metrics from '../../../config/metrics';
@@ -26,6 +27,7 @@ class TextInputItem extends Component {
                         placeholder={placeholder}
                         keyboardType='numeric'
                         onChangeText={onChange}
+                        onBlur={() => Keyboard.dismiss}
                     />
                 </View>
                 <View style={styles.labelContainer}>
@@ -121,7 +123,7 @@ class NewJournal extends Component {
     static navigationOptions = ({ navigation }) => {
         const { navigate } = navigation;
         return {
-            title: 'Jurnal baru'
+            title: 'Jurnal baru '
         }
     }
 
@@ -138,43 +140,48 @@ class NewJournal extends Component {
     }
 
     sendData() {
-        this.setState({ isLoading: true });
-        let request = {
-            username: this.props.username,
-            status: 'bayiku',
-            panjang_tubuh_bayi: this.state.panjangBadanValue,
-            berat_tubuh_bayi: this.state.beratBadanValue,
-            denyut_jantung_bayi: this.state.denyutJantungValue,
-            plasenta_bentuk_bayi: this.state.bentukValue,
-            plasenta_proporsi_bayi: this.state.proporsiValue,
-            plasenta_ketebalan_bayi: this.state.ketebalanValue,
-            plasenta_letak_bayi: this.state.letakValue,
-            cairan_ketuban_bayi: this.state.cairanKetubanValue,
-            kelainan_kongenital_bayi: this.state.kelainanKongenitalValue,
+        if (this.state.panjangBadanValue == '' || this.state.beratBadanValue == '' || this.state.denyutJantungValue == ''){
+            Alert.alert('Gagal', 'Mohon untuk melengkapi data sebelum melanjutkan')
         }
-        let formBody = []
-        for (let key in request) {
-            let encodedKey = encodeURIComponent(key)
-            let encodedValue = encodeURIComponent(request[key])
-            formBody.push(encodedKey + '=' + encodedValue)
+        else {
+            this.setState({ isLoading: true });
+            let request = {
+                username: this.props.username,
+                status: 'bayiku',
+                panjang_tubuh_bayi: this.state.panjangBadanValue,
+                berat_tubuh_bayi: this.state.beratBadanValue,
+                denyut_jantung_bayi: this.state.denyutJantungValue,
+                plasenta_bentuk_bayi: this.state.bentukValue,
+                plasenta_proporsi_bayi: this.state.proporsiValue,
+                plasenta_ketebalan_bayi: this.state.ketebalanValue,
+                plasenta_letak_bayi: this.state.letakValue,
+                cairan_ketuban_bayi: this.state.cairanKetubanValue,
+                kelainan_kongenital_bayi: this.state.kelainanKongenitalValue,
+            }
+            let formBody = []
+            for (let key in request) {
+                let encodedKey = encodeURIComponent(key)
+                let encodedValue = encodeURIComponent(request[key])
+                formBody.push(encodedKey + '=' + encodedValue)
+            }
+            formBody = formBody.join('&')
+    
+            fetch(metrics.BASE_URL + '/insert_jurnal.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formBody
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.status == 'success') {
+                        this.setState({ isLoading: false })
+                        this.props.navigation.navigate('newJournalContinue');
+                    } else {
+                        this.setState({ isLoading: false, isError: true })
+                    }
+                })
         }
-        formBody = formBody.join('&')
-
-        fetch(metrics.BASE_URL + '/insert_jurnal.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: formBody
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson.status == 'success') {
-                    this.setState({ isLoading: false })
-                    this.props.navigation.navigate('newJournalContinue');
-                } else {
-                    this.setState({ isLoading: false, isError: true })
-                }
-            })
     }
 
     render() {
@@ -244,6 +251,7 @@ class NewJournal extends Component {
                         onPress={() => this.sendData()}
                     />
                 </View>
+                <KeyboardSpacer />
             </ScrollView>
         )
     }

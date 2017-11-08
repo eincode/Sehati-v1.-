@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import StopwatchButtons from '../../../components/StopwatchButtons';
 import metrics from '../../../config/metrics';
+import MenuButton from '../../../components/Menu'
 
 class HitungKontraksi extends Component {
 
@@ -24,7 +25,44 @@ class HitungKontraksi extends Component {
   }
 
   static navigationOptions = {
-    title: 'Hitung Kontraksi'
+    title: 'Hitung Kontraksi ',
+    headerRight: (
+      <MenuButton
+        content = {`<p><strong>HITUNG KONTRAKSI</strong></p>
+         
+                 <p><strong>&nbsp;</strong></p>\n 
+                 <p><strong>Kenapa menghitung kontraksi bermanfaat?</strong></p>\n 
+                 <ol>\n 
+                 <li>Menghitung kontraksi membantu Bunda memantau kontraksi yang dirasakan</li>\n 
+                 <li>Kontraksi merupakan salah satu penanda kesiapan untuk melahirkan.</li>\n 
+                 <li>Kontraksi yang semakin kuat, lama, dekat jaraknya dan sakit, umumnya merupakan pertanda buah hati sudah siap menyapa Dunia.</li>\n 
+                 </ol>\n 
+                 <p>&nbsp;</p>\n 
+                 <p><strong>Kenapa kontraksi timbul?</strong></p>\n 
+                 <ol>\n 
+                 <li>Kontraksi timbul karena adanya pengencangan pada otot uterine atau saluran kencing.</li>\n 
+                 <li>Bentuk kontraksi beragam, mulai dari keram hingga perut terasa kencang, panas dalam (<em>burning</em>), sakit punggung, dan lain-lain.</li>\n 
+                 </ol>\n 
+                 <p>&nbsp;</p>\n 
+                 <p><strong>Apa yang harus dilakukan saat kontraksi terasa?</strong></p>\n 
+                 <ol>\n 
+                 <li>Setiap dokter atau bidan memiliki instruksi yang berbeda. Tidak ada salahnya jika sejak awal Bunda menanyakan hal ini kepada mereka.</li>\n 
+                 <li>Secara umum, pada kehamilan pertama, biasanya dokter atau bidan akan meminta Bunda untuk menghubungi mereka saat kontraksi terjadi setiap 5 menit selama 1 menit dalam rentang waktu setidaknya satu jam.</li>\n 
+                 </ol>\n 
+                 <p>&nbsp;</p>\n 
+                 <p><strong><em>Yuk</em></strong><strong> Manfaatkan Fitur Hitung Kontraksi</strong></p>\n 
+                 <ol>\n 
+                 <li>Tekan &ldquo;Mulai Kontraksi&rdquo; saat Bunda merasakan kontraksi dan tekan &ldquo;Stop Kontraksi&rdquo; saat kontraksi berhenti.</li>\n 
+                 <li>Aplikasi ini akan merekam dan menyimpan data, menghitung lamanya kontraksi, rentang waktu diantara dua kontraksi, dan rata-ratanya.</li>\n 
+                 </ol>\n 
+                 <p>&nbsp;</p>\n 
+                 <p><strong>Penting</strong></p>\n 
+                 <ol>\n 
+                 <li>Jika ketuban pecah, akan terjadi percepatan proses kelahiran, segera hubungi dokter atau bidan bunda.</li>\n 
+                 <li>Jika ini bukan kehamilan pertama dan proses kelahiran pada kehamilan pertama Bunda berlangsung cepat, atau Bunda sudah mengalami pembukaan serta pelunakan rahim, segera hubungi dokter atau bidan Bunda begitu terjadi kontraksi yang sakit.</li>\n 
+                 </ol >`}
+      />
+    )
   }
 
   componentDidMount() {

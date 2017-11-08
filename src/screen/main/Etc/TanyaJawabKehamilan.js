@@ -12,7 +12,7 @@ import metrics from '../../../config/metrics';
 class TanyaJawabKehamilan extends Component {
 
     static navigationOptions = {
-        title: 'Tanya Jawab Kehamilan'
+        title: 'Tanya Jawab Kehamilan '
     }
 
     state = {

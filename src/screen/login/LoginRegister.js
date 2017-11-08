@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 import GoogleSignIn from 'react-native-google-sign-in';
@@ -37,7 +37,7 @@ class LoginRegister extends Component {
             elevation: 0
         },
         headerBackTitle: null,
-        title: 'Masuk'
+        title: 'Masuk '
     }
 
     componentDidMount() {
@@ -107,10 +107,14 @@ class LoginRegister extends Component {
         }).then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status == 'success') {
-                    this.setState({ isLoggingIn: false });
-                    store.dispatch(setWeek(responseJson.minggu));
-                    store.dispatch(setUsername(username));
-                    this.props.navigation.dispatch(resetAction(this.props.userType));
+                    if (responseJson.status_reset) {
+                        this.props.navigation.navigate('additional', { type: 'reset', username: username })
+                    } else {
+                        this.setState({ isLoggingIn: false });
+                        store.dispatch(setUsername(username));
+                        store.dispatch(setWeek(responseJson.minggu));
+                        this.props.navigation.dispatch(resetAction(this.props.userType));
+                    }
                 }
             })
     }
@@ -135,7 +139,7 @@ class LoginRegister extends Component {
         }).then((response) => response.json())
         .then((responseJson) => {
             if (responseJson.status == 'success') {
-                this.props.navigation.navigate('additional')
+                this.props.navigation.navigate('additional', { type: 'normal' })
             } else {
                 this.socialMediaLogin(username)
             }
@@ -145,19 +149,23 @@ class LoginRegister extends Component {
     async loginWithFacebook() {
         const self = this
         FBLoginManager.loginWithPermissions(['public_profile'], function(err, data) {
-            fetch(`https://graph.facebook.com/me?access_token=${data.credentials.token}`)
-                .then((response) => response.json())
-                    .then((responseJson) => {
-                        let userData = {
-                            username: responseJson.id,
-                            fullName: responseJson.name,
-                            password: 'nopassword',
-                            email: '',
-                            login_type: 'facebook'
-                        }
-                        store.dispatch(setUserRegisterInfo(userData))
-                        self.checkUsername(responseJson.id)
-                    })
+            if (err) {
+                Alert.alert('Ada yang salah', 'Facebook login dibatalkan')
+            } else {
+                fetch(`https://graph.facebook.com/me?access_token=${data.credentials.token}`)
+                    .then((response) => response.json())
+                        .then((responseJson) => {
+                            let userData = {
+                                username: responseJson.id,
+                                fullName: responseJson.name,
+                                password: 'nopassword',
+                                email: '',
+                                login_type: 'facebook'
+                            }
+                            store.dispatch(setUserRegisterInfo(userData))
+                            self.checkUsername(responseJson.id)
+                        })
+            }
         })
     }
 

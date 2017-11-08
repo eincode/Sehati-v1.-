@@ -13,7 +13,8 @@ export default class CustomTextInput extends Component {
         keyboardType: PropTypes.string,
         secureTextEntry: PropTypes.bool,
         style: PropTypes.any,
-        multiline: PropTypes.bool
+        multiline: PropTypes.bool,
+        onSubmitEditing: PropTypes.func
     }
 
     static defaultProps = {
@@ -24,7 +25,7 @@ export default class CustomTextInput extends Component {
     focus = () => this.textInputRef.focus();
 
     render() {
-        const { placeholder, onChangeText, keyboardType, onBlur, secureTextEntry, style, onFocus, value, ...otherProps } = this.props;
+        const { placeholder, onChangeText, keyboardType, onBlur, secureTextEntry, style, onFocus, value, onSubmitEditing, ...otherProps } = this.props;
         return (
             <View style={[styles.container, style]} {...otherProps}>
                 <TextInput
@@ -40,6 +41,7 @@ export default class CustomTextInput extends Component {
                     style={styles.inputText}
                     onFocus={onFocus}
                     value={value}
+                    onSubmitEditing={onSubmitEditing}
                 />
             </View>
         )

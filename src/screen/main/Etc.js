@@ -6,7 +6,7 @@ import PictureButton from '../../components/PictureButton';
 
 class Etc extends Component{
     static navigationOptions = {
-        tabBarLabel: 'Lain-lain',
+        tabBarLabel: 'Lain-lain ',
         tabBarIcon: ({ focused }) => {
             switch (focused){
                 case true : return(

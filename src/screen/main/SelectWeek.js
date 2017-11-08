@@ -29,7 +29,7 @@ const setWeekReset = (week) => {
 export default class SelectWeek extends Component {
 
     static navigationOptions = {
-        title: 'Pilih minggu'
+        title: 'Pilih minggu '
     }
 
     handlePress(week) {

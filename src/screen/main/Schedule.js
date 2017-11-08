@@ -10,7 +10,7 @@ import metrics from '../../config/metrics';
 
 class Schedule extends Component {
     static navigationOptions = {
-        tabBarLabel: 'Jadwal',
+        tabBarLabel: 'Jadwal ',
         tabBarIcon: ({ focused }) => {
             switch (focused) {
                 case true: return (

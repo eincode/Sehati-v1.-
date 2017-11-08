@@ -10,7 +10,7 @@ const backAction = NavigationActions.back()
 export default class SelectProvinsi extends Component{
 
     static navigationOptions = {
-        title: 'Pilih provinsi'
+        title: 'Pilih provinsi '
     }
 
    render(){

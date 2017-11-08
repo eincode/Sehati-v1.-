@@ -5,7 +5,7 @@ import CustomButton from '../../components/CustomButton';
 
 export default class Photo extends Component{
     static navigationOptions = {
-        title: 'Foto KTP dan KIPB'
+        title: 'Foto KTP dan KIPB '
     }
 
     state = {

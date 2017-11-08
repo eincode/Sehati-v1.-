@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, TextInput, DeviceEventEmitter, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, DeviceEventEmitter, ScrollView, ActivityIndicator } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import KeyboardSpacer from 'react-native-keyboard-spacer'
 import { connect } from 'react-redux'
@@ -16,18 +16,20 @@ class NewMomentCaption extends Component {
 	static navigationOptions = ({ navigation }) => {
 		const { navigate, state, dispatch } = navigation
 		return {
-			title: 'Momen Baru'
+			title: 'Momen Baru '
 		}
 	}
 
 	constructor(props) {
 		super(props)
 		this.state = {
-			message: ''
+			message: '',
+			isSaving: false
 		}
 	}
 
 	saveMoment(caption, image) {
+		this.setState({ isSaving: true })
 		let sentImage = (image != null) ? image : 'null'
 		const self = this
         let request = {
@@ -72,8 +74,25 @@ class NewMomentCaption extends Component {
 		}
 	}
 
+	renderButton() {
+		const { params } = this.props.navigation.state		
+		if (this.state.isSaving) {
+			return(
+				<ActivityIndicator />
+			)	
+		} else {
+			return (
+				<CustomButton
+					text='Simpan'
+					buttonStyle={styles.button}
+					textStyle={styles.buttonText}
+					onPress={() => {this.saveMoment(this.state.message, params.selectedImage)}}	
+			/>
+			)
+		}
+	}
+
 	render() {
-		const { params } = this.props.navigation.state
 		return (
 			<ScrollView style={styles.container}>
 				{this.renderImage()}
@@ -86,12 +105,7 @@ class NewMomentCaption extends Component {
 						underlineColorAndroid={'transparent'}
 						textAlignVertical={'top'}
 					/>
-					<CustomButton
-						text='Simpan'
-						buttonStyle={styles.button}
-						textStyle={styles.buttonText}
-						onPress={() => {this.saveMoment(this.state.message, params.selectedImage)}}
-					/>
+					{this.renderButton()}
 					<KeyboardSpacer />
 				</View>
 			</ScrollView>

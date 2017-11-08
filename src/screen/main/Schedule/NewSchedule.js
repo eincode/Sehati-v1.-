@@ -11,7 +11,7 @@ import metrics from '../../../config/metrics';
 export default class NewSchedule extends Component {
 
     static navigationOptions = {
-        title: 'Jadwal baru'
+        title: 'Jadwal baru '
     }
 
     state = {

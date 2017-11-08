@@ -26,7 +26,7 @@ class MainLeftHeader extends Component {
     render() {
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('selectWeek')}>
-                <Text style={{ marginLeft:10, fontWeight: 'bold', color: metrics.SECONDARY_COLOR }}>Trisemester {this.getTrisemester()}</Text>
+                <Text style={{ marginLeft:10, fontWeight: 'bold', color: metrics.SECONDARY_COLOR }}>Trimester {this.getTrisemester()}</Text>
                 <Text style={{ marginLeft: 10, }}>Minggu ke: {this.state.week}</Text>
             </TouchableOpacity>
         )

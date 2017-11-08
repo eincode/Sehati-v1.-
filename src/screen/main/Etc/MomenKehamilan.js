@@ -10,7 +10,7 @@ class MomenKehamilan extends Component {
     static navigationOptions = ({ navigation }) => {
         const { navigate, state } = navigation;
         return {
-            title: 'Momen Kehamilan'
+            title: 'Momen Kehamilan '
         }
     }
 

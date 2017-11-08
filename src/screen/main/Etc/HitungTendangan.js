@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 import { View, StyleSheet, Text, ActivityIndicator, FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import MenuButton from '../../../components/Menu'
 
 import StopwatchButtons from '../../../components/StopwatchButtons';
 import metrics from '../../../config/metrics';
@@ -23,7 +24,34 @@ class HitungTendangan extends Component {
     }
 
     static navigationOptions = {
-        title: 'Hitung Tendangan'
+        title: 'Hitung Tendangan ',
+        headerRight: (
+            <MenuButton
+              content = {` <p><strong>HITUNG TENDANGAN</strong></p>\n 
+               <p>Gunakan fitur Hitung Tendangan untuk memantau gerakan bayi Bunda</p>\n 
+               <p>&nbsp;</p>\n 
+               <p><strong>Kenapa?</strong></p>\n 
+               <p>Mempelajari dan mengetahui pola gerakan bayi dapat membantu deteksi dini jika ada masalah dan mengurangi angka kelahiran bayi mati.</p>\n 
+               <p>&nbsp;</p>\n 
+               <p><strong>Memanfaatkan fitur &ldquo;Hitung Tendangan&rdquo;</strong></p>\n 
+               <ol>\n 
+               <li>Disarankan untuk mulai menggunakan fitur ini pada usia kehamilan 28 minggu (bahkan lebih awal jika kehamilan Bunda berisiko tinggi).</li>\n 
+               <li>Pilih waktu di mana bayi sedang aktif dan usahakan untuk melakukannya di waktu yang sama setiap hari.</li>\n 
+               <li><strong>Cara Penggunaan:</strong></li>\n 
+               </ol>\n 
+               <p>Tekan tombol <strong>Mulai</strong>, lalu tekan tombol <strong>Tendangan</strong> setiap kali Bunda merasakan bayi menendang, bergerak atau berputar.</p>\n 
+               <ol start=\"4\">\n 
+               <li>Fitur ini membantu menghitung waktu yang dibutuhkan untuk merekam 10 gerakan dan menyimpan setiap sesi rekaman sehingga Bunda dapat melihat perbandingannya.</li>\n 
+               </ol>\n 
+               <p>&nbsp;</p>\n 
+               <p><strong>Penting</strong></p>\n 
+               <ol>\n 
+               <li>Ada banyak cara untuk menghitung tendangan, diskusikan dengan dokter Bunda untuk cara terbaik.</li>\n 
+               <li>Jika dalam 2 jam hitungan gerakan bayi belum mencapai 10 kali, pancing/gugah bayi dengan makan camilan, minum minuman dingin atau bergerak. Tunggu selama 1 jam dan mulai hitung lagi. Jika dalam 2 jam selanjutnya jumlah gerakan belum mencapai 10 kali, <strong>segera hubungi Rumah Sakit atau dokter Bunda.</strong></li>\n 
+               </ol>\n 
+               <p>&nbsp;</p>\n`}
+            />
+          )
     }
 
     componentDidMount() {
@@ -103,32 +131,35 @@ class HitungTendangan extends Component {
             this.setState({
                 switchButton: 'switchOn',
                 stopwatchStart: false,
-                stopwatchReset: true
+                stopwatchReset: true,
+                kick: 0
             });
-            let request = {
-                waktu_tendangan: `${new Date().getHours()}:${new Date().getMinutes()}`,
-                durasi_tendangan: this.currentTime.slice(3),
-                username: this.props.username,
-                count_tendangan: 10
+            if (this.state.kick == 9) {
+                let request = {
+                    waktu_tendangan: `${new Date().getHours()}:${new Date().getMinutes()}`,
+                    durasi_tendangan: this.currentTime.slice(3),
+                    username: this.props.username,
+                    count_tendangan: 10
+                }
+                let formBody = []
+                for (let key in request) {
+                    let encodedKey = encodeURIComponent(key)
+                    let encodedValue = encodeURIComponent(request[key])
+                    formBody.push(encodedKey + '=' + encodedValue)
+                }
+                formBody = formBody.join('&')
+    
+                fetch(metrics.BASE_URL + '/insert_tendangan.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formBody
+                }).then((response) => response.json())
+                    .then((responseJson) => {
+                        this.componentDidMount();
+                    })
             }
-            let formBody = []
-            for (let key in request) {
-                let encodedKey = encodeURIComponent(key)
-                let encodedValue = encodeURIComponent(request[key])
-                formBody.push(encodedKey + '=' + encodedValue)
-            }
-            formBody = formBody.join('&')
-
-            fetch(metrics.BASE_URL + '/insert_tendangan.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formBody
-            }).then((response) => response.json())
-                .then((responseJson) => {
-                    this.componentDidMount();
-                })
         }
     }
 
@@ -143,9 +174,6 @@ class HitungTendangan extends Component {
         })
         if (kick == 10) {
             this.switchButtonPressed();
-            this.setState({
-                kick: 0
-            })
             return;
         }
     }

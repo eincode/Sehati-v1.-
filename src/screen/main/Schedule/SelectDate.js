@@ -5,7 +5,7 @@ import { Calendar } from 'react-native-calendars';
 export default class SelectDate extends Component {
 
     static navigationOptions = {
-        title: 'Pilih tanggal pemeriksaan'
+        title: 'Pilih tanggal pemeriksaan '
     }
 
     state = {

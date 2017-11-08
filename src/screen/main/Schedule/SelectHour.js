@@ -10,7 +10,7 @@ const backAction = NavigationActions.back()
 export default class SelectKabupaten extends Component{
 
     static navigationOptions = {
-        title: 'Pilih jam layanan'
+        title: 'Pilih jam layanan '
     }
 
    render(){

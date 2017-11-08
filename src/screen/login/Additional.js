@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, ActivityIndicator, TextInput } from 'react-native';
+import { TouchableWithoutFeedback, View, Text, Button, StyleSheet, ActivityIndicator, TextInput, Platform, DatePickerAndroid, Alert, Keyboard } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
@@ -24,7 +24,7 @@ class Additional extends Component {
     static navigationOptions = ({ navigation }) => {
         const { navigate, dispatch } = navigation;
         return {
-            title: 'Informasi tambahan'
+            title: 'Informasi tambahan '
         }
     }
 
@@ -44,45 +44,72 @@ class Additional extends Component {
 
     register(){
         this.setState({ isRegistering: true })
-        let userData = this.props.userInfo;
-        userData.haidTerakhir = this.state.selectedDate;
-        userData.hamil = this.state.hamil;
-        userData.keguguran = this.state.keguguran;
-        let request = {
-            username: userData.username,
-            nama: userData.fullName,
-            email: userData.email,
-            password: userData.password,
-            haid_terakhir: userData.haidTerakhir,
-            keguguran: userData.keguguran,
-            hamil: userData.hamil,
-            no_hp: userData.phoneNumber,
-            login_type: userData.login_type
-        }
-        console.log(request)
-        let formBody = []
-        for(let key in request) {
-            let encodedKey = encodeURIComponent(key);
-            let encodedValue = encodeURIComponent(request[key])
-            formBody.push(encodedKey + '=' + encodedValue)
-        }
-        formBody = formBody.join('&');
-
-        fetch(metrics.BASE_URL+'/insert_user2.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: formBody
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            console.log(responseJson)
-            if (responseJson.status == 'success') {
-                store.dispatch(setWeek(responseJson.minggu));
-                store.dispatch(setUsername(userData.username));
-                this.props.navigation.dispatch(resetAction('main'));
+        if (this.props.navigation.state.params.type == 'reset'){
+            const { username } = this.props.navigation.state.params
+            let request = {
+                username: username,
+                haid_terakhir: this.state.selectedDate
             }
-        })
+            let formBody = []
+            for(let key in request) {
+                let encodedKey = encodeURIComponent(key);
+                let encodedValue = encodeURIComponent(request[key])
+                formBody.push(encodedKey + '=' + encodedValue)
+            }
+            formBody = formBody.join('&');
+            fetch(metrics.BASE_URL+'/edit_hpht.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formBody
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    if(responseJson.status == 'success') {
+                        store.dispatch(setWeek(responseJson.minggu));
+                        store.dispatch(setUsername(username));
+                        this.props.navigation.dispatch(resetAction('main'));                
+                    }
+                })
+        } else {
+            let userData = this.props.userInfo;        
+            userData.haidTerakhir = this.state.selectedDate;
+            userData.hamil = this.state.hamil;
+            userData.keguguran = this.state.keguguran;
+            let request = {
+                username: userData.username,
+                nama: userData.fullName,
+                email: userData.email,
+                password: userData.password,
+                haid_terakhir: userData.haidTerakhir,
+                keguguran: userData.keguguran,
+                hamil: userData.hamil,
+                no_hp: userData.phoneNumber,
+                login_type: userData.login_type
+            }
+            let formBody = []
+            for(let key in request) {
+                let encodedKey = encodeURIComponent(key);
+                let encodedValue = encodeURIComponent(request[key])
+                formBody.push(encodedKey + '=' + encodedValue)
+            }
+            formBody = formBody.join('&');
+    
+            fetch(metrics.BASE_URL+'/insert_user2.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formBody
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.status == 'success') {
+                    store.dispatch(setWeek(responseJson.minggu));
+                    store.dispatch(setUsername(userData.username));
+                    this.props.navigation.dispatch(resetAction('main'));
+                }
+            })
+        }
     }
 
     renderRegisterComponent() {
@@ -107,66 +134,98 @@ class Additional extends Component {
             )
         }
     }
+    
+    async showCalendar() {
+        if (Platform.OS == 'ios') {
+            this.setState({ isCalendarOpened: true })
+        } else {
+            try {
+                const { action, year, month, day } = await DatePickerAndroid.open({
+                    date: new Date()
+                })
+                if (action !== DatePickerAndroid.dismissedAction) {
+                    month++
+                    if (month < 10) {
+                        month = '0'+month
+                    }
+                    if (day < 10) {
+                        day = '0'+day
+                    }
+                    this.setState({ selectedDate: `${year}-${month}-${day}` })
+                }
+            } catch({ code, message }) {
+                Alert.alert('Tidak bisa membuka calendar', message)
+            }
+        }
+    }
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.inputText}>HARI PERTAMA HAID TERAKHIR</Text>
-                    <CustomTextInput
-                        placeholder={'yyyy-mm-dd'}
-                        onFocus={() => this.setState({ isCalendarOpened: true })}
-                        value={this.state.selectedDate}
-                    />
-                    <Text style={styles.inputText}>BERAPA KALI ANDA PERNAH MENGANDUNG SEBELUMNYA?</Text>
-                    <CustomTextInput
-                        onChangeText={(value) => this.setState({ hamil: value })}
-                        keyboardType={'numeric'}
-                    />
-                    <Text style={styles.inputText}>BERAPA KALI ANDA PERNAH KEGUGURAN SEBELUMNYA?</Text>
-                    <CustomTextInput
-                        onChangeText={(value) => this.setState({ keguguran: value })}
-                        keyboardType={'numeric'}
-                    />
-                </View>
-                <View style={styles.textContainer}>
-                    <Text style={styles.staticText}>Anda tidak diwajibkan untuk mengisi data-data di</Text>
-                    <Text style={styles.staticText}>atas, namun data-data tersebut diperlukan untuk</Text>
-                    <Text style={styles.staticText}>memastikan anda mendapatkan pengalaman</Text>
-                    <Text style={styles.staticText}>terbaik saat menggunakan aplikasi Sehati</Text>
-                </View>
-                <View style={styles.textContainer}>
-                    <Text style={styles.staticText}>Anda juga dapat mengisi data-data tersebut di lain</Text>
-                    <Text style={styles.staticText}>waktu melalui halaman Pengaturan</Text>
-                </View>
-                <View style={styles.textContainer}>
-                    {this.renderRegisterComponent()}
-                </View>
-                <Modal isVisible={this.state.isCalendarOpened}>
-                    <View style={styles.modal}>
-                        <View style={{ flexDirection: 'row', marginBottom:10 }}>
-                            <View style={{ justifyContent: 'center' }}>
-                                <TextInput
-                                    placeholder={'Lompat ke tahun...'}
-                                    onChangeText={(value) => this.setState({ editYear: value })}
-                                />
-                            </View>
-                            <View>
-                                <Button
-                                    title={'Lompat'}
-                                    onPress={() => this.setState({ currentYear: this.state.editYear })}
-                                />
-                            </View>
-                        </View>
-                        <Calendar
-                            current={this.state.currentYear || `${new Date()}`}
-                            onDayPress={(day) => {
-                                this.setState({ selectedDate: day.dateString, isCalendarOpened: false })
-                            }}
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View style={styles.container}>
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.inputText}>HARI PERTAMA HAID TERAKHIR</Text>
+                        <CustomTextInput
+                            placeholder={'yyyy-mm-dd'}
+                            onFocus={() => this.showCalendar()}
+                            value={this.state.selectedDate}
+                            onSubmitEditing={() => Keyboard.dismiss()}
+                            onBlur={() => Keyboard.dismiss()}
+                        />
+                        <Text style={styles.inputText}>BERAPA KALI ANDA PERNAH MENGANDUNG SEBELUMNYA?</Text>
+                        <CustomTextInput
+                            onChangeText={(value) => this.setState({ hamil: value })}
+                            keyboardType={'numeric'}
+                            onSubmitEditing={() => Keyboard.dismiss()}
+                            onBlur={() => Keyboard.dismiss()}                        
+                        />
+                        <Text style={styles.inputText}>BERAPA KALI ANDA PERNAH KEGUGURAN SEBELUMNYA?</Text>
+                        <CustomTextInput
+                            onChangeText={(value) => this.setState({ keguguran: value })}
+                            keyboardType={'numeric'}
+                            onSubmitEditing={() => Keyboard.dismiss()}
+                            onBlur={() => Keyboard.dismiss()}                        
                         />
                     </View>
-                </Modal>
-            </View>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.staticText}>Anda tidak diwajibkan untuk mengisi data-data di</Text>
+                        <Text style={styles.staticText}>atas, namun data-data tersebut diperlukan untuk</Text>
+                        <Text style={styles.staticText}>memastikan anda mendapatkan pengalaman</Text>
+                        <Text style={styles.staticText}>terbaik saat menggunakan aplikasi Sehati</Text>
+                    </View>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.staticText}>Anda juga dapat mengisi data-data tersebut di lain</Text>
+                        <Text style={styles.staticText}>waktu melalui halaman Pengaturan</Text>
+                    </View>
+                    <View style={styles.textContainer}>
+                        {this.renderRegisterComponent()}
+                    </View>
+                    <Modal isVisible={this.state.isCalendarOpened}>
+                        <View style={styles.modal}>
+                            <View style={{ flexDirection: 'row', marginBottom:10 }}>
+                                <View style={{ justifyContent: 'center' }}>
+                                    <TextInput
+                                        placeholder={'Lompat ke tahun...'}
+                                        onChangeText={(value) => this.setState({ editYear: value })}
+                                    />
+                                </View>
+                                <View>
+                                    <Button
+                                        title={'Lompat'}
+                                        onPress={() => this.setState({ currentYear: this.state.editYear })}
+                                    />
+                                </View>
+                            </View>
+                            <Calendar
+                                current={this.state.currentYear || `${new Date()}`}
+                                onDayPress={(day) => {
+                                    this.setState({ selectedDate: day.dateString, isCalendarOpened: false })
+                                }}
+                            />
+                        </View>
+                    </Modal>
+                </View>
+            </TouchableWithoutFeedback>
         )
     }
 }

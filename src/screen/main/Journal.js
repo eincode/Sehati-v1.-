@@ -7,7 +7,7 @@ import Tabs from '../../components/Tabs';
 
 export default class Journal extends Component {
     static navigationOptions = {
-        tabBarLabel: 'Jurnal',
+        tabBarLabel: 'Jurnal ',
         tabBarIcon: ({ focused }) => {
             switch (focused) {
                 case true: return (

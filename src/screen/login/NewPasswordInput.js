@@ -8,7 +8,7 @@ export default class NewPasswordInput extends Component{
     static navigationOptions = ({navigation}) => {
         const { navigate } = navigation;
         return{
-            title: 'Perbarui kata sandi',
+            title: 'Perbarui kata sandi ',
             headerRight: (
                 <Text style = {{marginRight: 20, color: 'grey'}} onPress={() => navigate('passwordChanged')}>Lanjut</Text>
             )

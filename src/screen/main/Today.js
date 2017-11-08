@@ -9,7 +9,7 @@ import metrics from '../../config/metrics';
 
 class Today extends Component {
     static navigationOptions = {
-        tabBarLabel: 'Hari ini',
+        tabBarLabel: 'Hari ini ',
         tabBarIcon: ({ focused }) => {
             switch (focused) {
                 case true: return (

@@ -11,7 +11,7 @@ class Verification extends Component{
     static navigationOptions = (props) => {
         const { navigate, state } = props.navigation;
         return{
-            title: 'Verifikasi',
+            title: 'Verifikasi ',
             headerRight: (
                 <HeaderRight 
                     navigation = {props.navigation}
