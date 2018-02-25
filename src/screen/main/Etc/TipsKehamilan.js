@@ -35,6 +35,12 @@ export default class TipsKehamilan extends Component {
             })
     }
 
+    filter(name) {
+        this.state.tipsList.filter((item) => {
+            return item.name == name
+        })
+    }
+
     renderContent() {
         const { navigation } = this.props
         if (this.state.isDataLoading) {

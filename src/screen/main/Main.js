@@ -86,7 +86,7 @@ class Main extends Component{
         }).then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson)
-                if (responseJson.alamat == null) {
+                if (responseJson.email == null) {
                     Alert.alert('Perhatian', 'Mohon untuk melengkapi profil anda di bagian pengaturan', [{
                         text: 'OK', onPress: () => self.props.rootNav.navigate('settings')
                     }], {

@@ -33,8 +33,8 @@ export default class ForgetPasswordEmail extends Component{
             },
             body: formBody
         }).then((response) => response.json())
-        .then((responseJson) => {
-
+        .then(() => {
+            this.props.navigation.navigate('forgetPasswordInbox')
         })
     }
 
@@ -53,6 +53,7 @@ export default class ForgetPasswordEmail extends Component{
                     text='Kirim'
                     buttonStyle={styles.buttonStyle}
                     textStyle={styles.buttonText}
+                    onPress={() => this.sendForgetPassword()}
                 />
             </View>
         )
@@ -79,6 +80,8 @@ const styles = StyleSheet.create({
 
     buttonStyle: {
         backgroundColor: 'rgb(92, 234, 151)',
+        alignSelf: 'center',
+        marginTop: 10
     },
 
     buttonText: {

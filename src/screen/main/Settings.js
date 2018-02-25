@@ -257,11 +257,11 @@ class Settings extends Component {
         let request = {
             username: this.props.username,
             nama: this.state.fullname,
-            tanggal_lahir: this.state.birthdate,
-            alamat: this.state.address,
-            propinsi: this.state.province,
-            kabupaten: this.state.state,
-            kode_pos: this.state.postal,
+            // tanggal_lahir: this.state.birthdate,
+            // alamat: this.state.address,
+            // propinsi: this.state.province,
+            // kabupaten: this.state.state,
+            // kode_pos: this.state.postal,
             email: this.state.email,
             haid_terakhir: this.state.lastHaid
         }
@@ -307,6 +307,7 @@ class Settings extends Component {
                         })
                 } else {
                     alert('Gagal')
+                    console.log(responseJson)
                 }
             })
     }

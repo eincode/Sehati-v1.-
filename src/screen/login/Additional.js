@@ -38,7 +38,7 @@ class Additional extends Component {
             keguguran: '',
             registerMessage: '',
             isCalendarOpened: false,
-            selectedDate: ''
+            selectedDate: `${new Date().getFullYear()}-${new Date().getMonth() < 10 ? '0'+(new Date().getMonth() + 1) : new Date().getMonth() + 1}-${new Date().getDay()}`
         }
     }
 
@@ -164,7 +164,7 @@ class Additional extends Component {
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={styles.container}>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.inputText}>HARI PERTAMA HAID TERAKHIR</Text>
+                        <Text style={styles.inputText}>HARI PERTAMA HAID TERAKHIR *Harus diisi</Text>
                         <CustomTextInput
                             placeholder={'yyyy-mm-dd'}
                             onFocus={() => this.showCalendar()}
@@ -172,14 +172,14 @@ class Additional extends Component {
                             onSubmitEditing={() => Keyboard.dismiss()}
                             onBlur={() => Keyboard.dismiss()}
                         />
-                        <Text style={styles.inputText}>BERAPA KALI ANDA PERNAH MENGANDUNG SEBELUMNYA?</Text>
+                        <Text style={styles.inputText}>BERAPA KALI ANDA PERNAH MENGANDUNG SEBELUMNYA? *Harus diisi</Text>
                         <CustomTextInput
                             onChangeText={(value) => this.setState({ hamil: value })}
                             keyboardType={'numeric'}
                             onSubmitEditing={() => Keyboard.dismiss()}
                             onBlur={() => Keyboard.dismiss()}                        
                         />
-                        <Text style={styles.inputText}>BERAPA KALI ANDA PERNAH KEGUGURAN SEBELUMNYA?</Text>
+                        <Text style={styles.inputText}>BERAPA KALI ANDA PERNAH KEGUGURAN SEBELUMNYA? *Harus diisi</Text>
                         <CustomTextInput
                             onChangeText={(value) => this.setState({ keguguran: value })}
                             keyboardType={'numeric'}

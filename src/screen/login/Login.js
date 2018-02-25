@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Keyboard, Alert } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -74,6 +74,9 @@ class Login extends Component {
                     } else {
                         this.props.navigation.dispatch(resetAction(this.props.userType));
                     }
+                } else {
+                    Alert.alert('Pemberitahuan', 'Username/Password anda salah')
+                    this.setState({ isLoggingIn: false })
                 }
             })
     }
