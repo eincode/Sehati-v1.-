@@ -70,7 +70,7 @@ class DetailJournal extends Component {
             return (
                 <ActivityIndicator size='large' />
             )
-        } else if (this.state.data.length == 0) {
+        } else if (this.state.data == null) {
             return (
                 <Text>Tidak ada data untuk ditampilkan</Text>
             )
